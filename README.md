@@ -78,6 +78,7 @@ data/
 
 - **다운로드:** 
   1. xBD 데이터셋은 [xBD 공식 페이지](https://xview2.org)에서 다운로드하여 직접 road를 labeling을 수행합니다.
+  2. 혹은 해당 [구글드라이브 링크](https://drive.google.com/drive/folders/1y2wBg3ledu3A5C1I6-xiWdcGA0SyFrs4)에 들어가서 다운받으세요.(추천) 해당 파일들은 road labeling을 완성한 상태입니다.
 
 
 ## 사용 방법
@@ -99,6 +100,6 @@ data/
 
 ## 참고 자료
 
-- [xBD 공식 페이지](https://example.com/xbd)
+- [xBD 공식 페이지](https://xview2.org)
 - [PyTorch Documentation](https://pytorch.org/docs/)
 - [Unet: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597)
