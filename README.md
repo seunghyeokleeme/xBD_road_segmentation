@@ -91,7 +91,7 @@ datasets/
 
 2. 1024 x 1024 -> 4개의 512 x 512 crop
   ```bash
-  python3 "./crop.py" --datasets_dir="./datasets" \
+  python3 ./crop.py --datasets_dir="./datasets" \
 --save_dir="./datasets_512"
   ```
 
@@ -102,7 +102,7 @@ datasets/
 
 4. TRAIN
 ```bash
-python3 "./train.py" \
+python3 ./train.py \
 --lr 1e-3 --batch_size 12 --num_epoch 50 \
 --data_dir "./datasets_512" \
 --ckpt_dir "./checkpoint_v1" \
@@ -114,7 +114,7 @@ python3 "./train.py" \
 
 5. TEST
 ```bash
-python3 "./train.py" \
+python3 ./train.py \
 --lr 1e-3 --batch_size 12 --num_epoch 50 \
 --data_dir "./datasets_512" \
 --ckpt_dir "./checkpoint_v1" \
@@ -126,14 +126,14 @@ python3 "./train.py" \
 
 6. EVAL
 ```bash
-python3 "./eval.py" \
+python3 ./eval.py \
 --result_dir "./results_v1" \
 --out_fp "./localization_metrics.json"
 ```
 
 7. INFERENCE
 ```bash
-python3 "./inference.py" \
+python3 ./inference.py \
 --lr 1e-3 --batch_size 4 \
 --data_dir "./inference_datasets" \
 --ckpt_dir "./checkpoint" \
