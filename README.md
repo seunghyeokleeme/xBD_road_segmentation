@@ -13,7 +13,7 @@
   - [설치 방법](#설치-방법)
   - [데이터셋](#데이터셋)
   - [사용 방법](#사용-방법)
-    - [Continue...](#continue)
+  - [결과](#결과)
   - [기여 방법](#기여-방법)
   - [라이선스](#라이선스)
   - [참고 자료](#참고-자료)
@@ -48,7 +48,7 @@
 
 2. 가상환경 생성 및 활성화 (선택 사항):
    ```bash
-   python -m venv venv
+   python3 -m venv venv
    source venv/bin/activate  # Linux/Mac
    venv\Scripts\activate  # Windows
    ```
@@ -65,15 +65,16 @@ xBD 데이터셋을 사용합니다. 데이터셋은 다음과 같이 구성되�
 **다만, 해당 프로젝트는 building이 아닌 road를 이미지 분할을 하기 때문에 직접 레이블링이 필요합니다.**
 
 ```
-data/
+datasets/
 ├── train/
 │   ├── images/
 │   └── targets/
-├── val/
+├── hold/
 │   ├── images/
 │   └── targets/
 └── test/
     └── images/
+    └── targets/
 ```
 
 - **다운로드:** 
@@ -83,7 +84,78 @@ data/
 
 ## 사용 방법
 
-### Continue...
+1. datasets 압축 해제 (1024 x 1024)
+  ```bash
+  python3 ./data_read.py
+  ```
+
+2. 1024 x 1024 -> 4개의 512 x 512 crop
+  ```bash
+  python3 "./crop.py" --datasets_dir="./datasets" \
+--save_dir="./datasets_512"
+  ```
+
+3. tensorboard 실행
+  ```bash
+  tensorboard --logdir='./log'
+  ```
+
+4. TRAIN
+```bash
+python3 "./train.py" \
+--lr 1e-3 --batch_size 12 --num_epoch 50 \
+--data_dir "./datasets_512" \
+--ckpt_dir "./checkpoint_v1" \
+--log_dir "./log/exp1" \
+--result_dir "./results_v1" \
+--mode "train" \
+--train_continue "off"
+```
+
+5. TEST
+```bash
+python3 "./train.py" \
+--lr 1e-3 --batch_size 12 --num_epoch 50 \
+--data_dir "./datasets_512" \
+--ckpt_dir "./checkpoint_v1" \
+--log_dir "./log/exp1" \
+--result_dir "./results_v1" \
+--mode "test" \
+--train_continue "off"
+```
+
+6. EVAL
+```bash
+python3 "./eval.py" \
+--result_dir "./results_v1" \
+--out_fp "./localization_metrics.json"
+```
+
+7. INFERENCE
+```bash
+python3 "./inference.py" \
+--lr 1e-3 --batch_size 4 \
+--data_dir "./inference_datasets" \
+--ckpt_dir "./checkpoint" \
+--result_dir "./inference_v1"
+```
+
+## 결과
+
+| Parameter         | 실험 1                | 실험 2 |
+|-------------------|---------------------|--------|
+| Image Size        | 512 x 512 4 crop    | -      |
+| Learning Rate     | 1.0000e-03          | -      |
+| Batch Size        | 12                  | -      |
+| Number of Epoch   | 13                  | -      |
+| Model             | U-net               | -      |
+| Loss              | nn.BCEWithLogitsLoss| -      |
+| Precision         | 0.8562              | -      |
+| Recall            | 0.3491              | -      |
+| F1 Score          | 0.4960              | -      |
+| Accuracy          | 0.9521              | -      |
+| IoU               | 0.3298              | -      |
+
 
 ## 기여 방법
 
