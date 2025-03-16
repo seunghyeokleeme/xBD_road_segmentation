@@ -142,7 +142,8 @@ python3 "./inference.py" \
 
 ## 결과
 
-![실험 사진](./result.png)
+![실험 사진1](./results/result1.png)
+![실험 사진2](./results/result2.png)
 
 | Parameter         | 실험 1                | 실험 2 |
 |-------------------|---------------------|--------|
