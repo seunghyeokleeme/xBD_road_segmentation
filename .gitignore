@@ -246,3 +246,4 @@ xbd_road_color/
 datasets/
 datasets_512/
 *.tar
+log

@@ -10,7 +10,7 @@ from dataset import xbdDataset
 from model import UNet
 from utils.checkpoint import load, save
 
-parser = argparse.ArgumentParser(description='Train the xBD building segmentation',
+parser = argparse.ArgumentParser(description='Train the xBD road segmentation',
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument('--lr', default=1e-3, type=float, dest='lr')
@@ -100,7 +100,7 @@ def train_loop(dataloader, model, fn_loss, optim, epoch, writer):
     for batch, (input, mask) in enumerate(dataloader, 1):
         input = input.to(device)
         mask = mask.to(device)
-        
+
         logits = model(input)
         loss = fn_loss(logits, mask)
 
@@ -118,13 +118,6 @@ def train_loop(dataloader, model, fn_loss, optim, epoch, writer):
         print("TRAIN: EPOCH %04d | BATCH %04d / %04d | LOSS %.4f | ACC %.4f"%
                 (epoch, batch, num_batches, loss.item(), acc.item()))
 
-        # input_img = fn_denorm(input, mean=[0.3096, 0.3428, 0.2564], std=[0.1309, 0.1144, 0.1081])
-
-        # # Tensorboard 저장하기
-        # writer.add_images("input", img_tensor=input_img, global_step=(num_batches*(epoch -1)+batch))
-        # writer.add_images("mask", img_tensor=mask, global_step=(num_batches*(epoch -1)+batch))
-        # writer.add_images("predict", img_tensor=pred, global_step=(num_batches*(epoch -1)+batch))
-    
     train_loss /= num_batches
     train_accuracy = correct / num_batches
     writer.add_scalar('Loss', train_loss, epoch)
@@ -155,13 +148,6 @@ def eval_loop(dataloader, model, fn_loss, epoch, writer):
             print("VALID: EPOCH %04d | BATCH %04d / %04d | LOSS %.4f | ACC %.4f"%
                     (epoch, batch, num_batches, loss.item(), acc.item()))
 
-            # input_img = fn_denorm(input, mean=[0.3096, 0.3428, 0.2564], std=[0.1309, 0.1144, 0.1081])
-
-            # # Tensorboard 저장하기
-            # writer.add_images("input", img_tensor=input_img, global_step=(num_batches*(epoch -1)+batch))
-            # writer.add_images("mask", img_tensor=mask, global_step=(num_batches*(epoch -1)+batch))
-            # writer.add_images("predict", img_tensor=pred, global_step=(num_batches*(epoch -1)+batch))
-        
     eval_loss /= num_batches
     eval_accuracy = correct / num_batches
     writer.add_scalar('Loss', eval_loss, epoch)
@@ -173,7 +159,7 @@ st_epoch = 0
 
 if mode == 'train':
     if train_continue == 'on':
-        net, optim, st_epoch = load(ckpt_dir=ckpt_dir, net=net, optim=optim, device=device)
+        net, optim, st_epoch = load(ckpt_dir=ckpt_dir, net=net, optim=optim, device=device, weight_only=False)
     
     for epoch in range(st_epoch+1, num_epoch + 1):
         loss, acc = train_loop(dataloader=train_loader, model=net, fn_loss=fn_loss, optim=optim, epoch=epoch, writer=writer_train)
@@ -212,11 +198,6 @@ else:
 
             input_img = fn_denorm(input, mean=[0.3096, 0.3428, 0.2564], std=[0.1309, 0.1144, 0.1081])
 
-            # Tensorboard 저장하기
-            writer_test.add_images("input", img_tensor=input_img, global_step=batch)
-            writer_test.add_images("mask", img_tensor=mask, global_step=batch)
-            writer_test.add_images("predict", img_tensor=pred, global_step=batch)
-        
             # 평가 사진 저장
             for i in range(pred.size(0)):
                 # 입력 이미지 저장 (3채널)

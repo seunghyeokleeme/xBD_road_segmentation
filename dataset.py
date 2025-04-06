@@ -24,13 +24,10 @@ class xbdDataset(VisionDataset):
         image = Image.open(image_path).convert("RGB")
         mask  = Image.open(mask_path).convert("L")
 
-        if self.transforms is not None:
-            image, mask = self.transforms(image, mask)
-        else:
-            if self.transform is not None:
-                image = self.transform(image)
-            if self.target_transform is not None:
-                mask = self.target_transform(mask)
+        if self.transform is not None:
+            image = self.transform(image)
+        if self.target_transform is not None:
+            mask = self.target_transform(mask)
 
         return image, mask
 

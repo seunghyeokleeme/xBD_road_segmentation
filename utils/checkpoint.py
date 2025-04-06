@@ -8,14 +8,14 @@ def save(ckpt_dir, net, optim, epoch):
     torch.save({'net': net.state_dict(), 'optim': optim.state_dict()},
                "%s/model_epoch%d.pth" % (ckpt_dir, epoch))
 
-def load(ckpt_dir, net, optim, device):
+def load(ckpt_dir, net, optim, device, weight_only=True):
     if not os.path.exists(ckpt_dir):
         epoch  = 0
         return net, optim, epoch
     ckpt_list = os.listdir(ckpt_dir)
     ckpt_list.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
 
-    dict_model = torch.load('%s/%s' % (ckpt_dir, ckpt_list[-1]), map_location=device)
+    dict_model = torch.load('%s/%s' % (ckpt_dir, ckpt_list[-1]), map_location=device, weights_only=weight_only)
 
     net.load_state_dict(dict_model['net'])
     optim.load_state_dict(dict_model['optim'])

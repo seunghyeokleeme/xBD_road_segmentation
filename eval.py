@@ -86,7 +86,7 @@ def compute_localization_metrics(result_dir):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Compute localization (building detection) metrics for semantic segmentation results'
+        description='Compute localization (road detection) metrics for semantic segmentation results'
     )
     parser.add_argument('--result_dir', type=str, default='./results_v1',
                         help='Path to results directory (default: ./results_v1)')

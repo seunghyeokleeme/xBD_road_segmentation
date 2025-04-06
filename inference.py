@@ -9,7 +9,7 @@ from dataset import inferenceDataset
 from model import UNet
 from utils.checkpoint import load
 
-parser = argparse.ArgumentParser(description='Train the xBD building segmentation',
+parser = argparse.ArgumentParser(description='Train the xBD road segmentation',
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument('--lr', default=1e-3, type=float, dest='lr')
@@ -59,7 +59,7 @@ fn_acc = lambda pred, label: (pred == label).float().mean()
 # Optimizer 설정하기
 optim = torch.optim.Adam(net.parameters(), lr=lr)
 
-net, optim, _ = load(ckpt_dir=ckpt_dir, net=net, optim=optim, device=device)
+net, _, _ = load(ckpt_dir=ckpt_dir, net=net, optim=optim, device=device)
 
 num_batches = len(inference_loader)
 
