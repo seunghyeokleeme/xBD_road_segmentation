@@ -167,13 +167,13 @@ if mode == 'train':
 
         print(f"Epoch {epoch} summary: Train Loss: {loss:.4f} | Train Accuracy: {100*acc:.1f}% | Val Loss: {val_loss:.4f} | Val Accuracy: {100*val_acc:.1f}%")
     
-        if epoch % 5 == 0:
+        if epoch % 2 == 0:
             save(ckpt_dir=ckpt_dir, net=net, optim=optim, epoch=epoch)
 
     writer_train.close()
     writer_val.close()
 else:
-    net, optim, _ = load(ckpt_dir=ckpt_dir, net=net, optim=optim, device=device)
+    net, _, _ = load(ckpt_dir=ckpt_dir, net=net, optim=optim, device=device)
 
     num_batches = len(test_loader)
     test_loss, correct = 0.0, 0

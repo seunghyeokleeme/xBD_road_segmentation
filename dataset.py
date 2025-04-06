@@ -10,8 +10,8 @@ class xbdDataset(VisionDataset):
         super(xbdDataset, self).__init__(root, transforms, transform, target_transform)
         self.images_dir = os.path.join(root, "images")
         self.masks_dir = os.path.join(root, "targets")
-        self.image_filenames = sorted(os.listdir(self.images_dir))
-        self.mask_filenames = sorted(os.listdir(self.masks_dir))
+        self.image_filenames = sorted([f for f in os.listdir(self.images_dir) if f.endswith('pre_disaster.png')])
+        self.mask_filenames = sorted([f for f in os.listdir(self.masks_dir) if f.endswith('pre_disaster_target.png')])
         assert len(self.image_filenames) == len(self.mask_filenames)
 
     def __len__(self):
