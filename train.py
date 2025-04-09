@@ -1,6 +1,7 @@
 import argparse
 import os
 import torch
+import numpy as np
 from torch import nn
 from PIL import Image
 from torchvision.transforms import v2
@@ -208,7 +209,7 @@ else:
 
                 # 마스크 이미지 저장 (단일 채널)
                 mask_np = mask[i].cpu().squeeze().numpy()  # shape: (높이, 너비)
-                mask_np = (mask_np * 255).astype('uint8')
+                mask_np = np.where(mask_np > 0, 255, 0).astype('uint8')  # 0보다 크면 255로, 그렇지 않으면 0으로 변환
                 mask_save_path = os.path.join(result_dir, 'png', f"test_mask_batch{batch:04d}_img{i:02d}.png")
                 Image.fromarray(mask_np).save(mask_save_path)
 
